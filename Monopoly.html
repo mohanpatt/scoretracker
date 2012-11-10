@@ -1,0 +1,180 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Monopoly Scorecard</title>
+<link href="http://webdesigntutsplus.s3.amazonaws.com/tuts/195_bootstrap/demo/bootstrap-1.1.1.css" rel="stylesheet">
+<script language="javascript">
+function updateBalance() {
+	document.getElementById("player1balance").textContent = document.getElementById("p1balance").value;
+	document.getElementById("player2balance").textContent = document.getElementById("p2balance").value;
+}
+function getUserInput() {
+	var val = prompt("Please enter amount","0");
+	var numval = Number(val);
+	if(isNaN(numval)) {
+		alert("Please enter a valid number using zero instead");
+		return Number("0");
+	} else {
+		var numvalint = Math.round(numval);
+		return numvalint;
+	}
+}
+function p1paysp2() {
+		var numvalint = getUserInput();
+		var p1valint = Math.round(Number(document.getElementById("p1balance").value));
+		var p2valint = Math.round(Number(document.getElementById("p2balance").value));
+		p2valint = p2valint + numvalint;
+		p1valint = p1valint - numvalint;
+		document.getElementById("p1balance").value = p1valint;
+		document.getElementById("p2balance").value = p2valint;
+		updateBalance();
+}
+function p1paysbank() {
+		var numvalint = getUserInput();
+		var p1valint = Math.round(Number(document.getElementById("p1balance").value));
+		p1valint = p1valint - numvalint;
+		document.getElementById("p1balance").value = p1valint;
+		updateBalance();
+}
+function bankpaysp1() {
+		var numvalint = getUserInput();
+		var p1valint = Math.round(Number(document.getElementById("p1balance").value));
+		p1valint = p1valint + numvalint;
+		document.getElementById("p1balance").value = p1valint;
+		updateBalance();
+}
+function p2paysp1() {
+		var numvalint = getUserInput();
+		var p1valint = Math.round(Number(document.getElementById("p1balance").value));
+		var p2valint = Math.round(Number(document.getElementById("p2balance").value));
+		p2valint = p2valint - numvalint;
+		p1valint = p1valint + numvalint;
+		document.getElementById("p1balance").value = p1valint;
+		document.getElementById("p2balance").value = p2valint;
+		updateBalance();
+}
+function p2paysbank() {
+		var numvalint = getUserInput();
+		var p2valint = Math.round(Number(document.getElementById("p2balance").value));
+		p2valint = p2valint - numvalint;
+		document.getElementById("p2balance").value = p2valint;
+		updateBalance();
+}
+function bankpaysp2() {
+		var numvalint = getUserInput();
+		var p2valint = Math.round(Number(document.getElementById("p2balance").value));
+		p2valint = p2valint + numvalint;
+		document.getElementById("p2balance").value = p2valint;
+		updateBalance();
+}
+function handleChangeText() {
+	var p1 = document.getElementById("player1").value;
+	var p2 = document.getElementById("player2").value;
+	document.getElementById("player1text").textContent = p1;
+	document.getElementById("p1p2").text = p1 + " Pays " + p2;
+	document.getElementById("p1bank").text = p1 + " Pays Bank";
+	document.getElementById("bankp1").text = "Bank Pays " + p1;
+	document.getElementById("player2text").textContent = p2;
+	document.getElementById("p2p1").text = p2 + " Pays " + p1;
+	document.getElementById("p2bank").text = p2 + " Pays Bank";
+	document.getElementById("bankp2").text = "Bank Pays " + p2;
+}
+function startNewGame() {
+	var r=confirm("Press OK to reset balance to 2000 for both players!");
+	if (r==true)
+	  {
+		var resetbalance = 2000;
+	  	document.getElementById("p1balance").value = resetbalance;
+		document.getElementById("p2balance").value = resetbalance;
+		updateBalance();
+	  }
+	else
+	  {
+	  	//do nothing
+	  }
+}
+</script>
+<style type="text/css">
+.balance {
+    font-size: 24px;
+}
+.player {
+    font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+
+<input type="hidden" id="p1balance" value="2000">
+<input type="hidden" id="p2balance" value="2000">
+
+<h1>&nbsp;&nbsp;Monopoly Scoreboard</h1>
+&nbsp;&nbsp;<a href="javascript:startNewGame()" class="btn submit large">Start New Game</a>
+<br><br>
+
+    <label class="player">PLAYER 1:</label>
+	<div class="input"><input class="xlarge" type="text" id="player1" value="Player 1" onChange="handleChangeText()"><br><br></div>
+	
+    <label class="player">PLAYER 2:</label>
+	<div class="input"><input class="xlarge" type="text" id="player2" value="Player 2" onChange="handleChangeText()"><br></div>
+<br><br><br>
+
+<table class="zebra-striped table-bordered">
+	<thead>
+        <tr align="center">
+            <th>
+                <label class="player" id="player1text">Player 1</label>
+            </th>
+            <th>
+            	<label class="medium">Play Now!</label>
+    </th>
+            <th>
+                <label class="player" id="player2text">Player 2</label>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><label class="balance">
+                $<span id="player1balance">2000</span></label>
+            </td>
+            <td>&nbsp;</td>
+             <td><label class="balance">
+                $<span id="player2balance">2000</span></label>
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <a href="javascript:p1paysbank();" id="p1bank" class="btn primary large">Player 1 Pays Bank</a>
+                <!-- <button class="btn primary" id="p1bank" value="Player 1 Pays Bank" onClick="p1paysbank();">Player 1 Pays Bank</button> -->
+            </td>
+            <td>
+                <a href="javascript:p1paysp2();" id="p1p2" class="btn danger large">Player 1 Pays Player 2</a>
+                <!-- <button class="btn danger" id="p1p2" value="Player 1 Pays Player 2" onClick="p1paysp2();">Player 1 Pays Player 2</button> -->
+            </td>
+             <td>
+                <a href="javascript:p2paysbank();" id="p2bank" class="btn primary large">Player 2 Pays Bank</a>
+                <!-- <button class="btn primary" id="p2bank" value="Player 2 Pays Bank" onClick="p1paysbank();">Player 2 Pays Bank</button> -->
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <a href="javascript:bankpaysp1();" id="bankp1" class="btn success large">Bank Pays Player 1</a>
+                <!-- <button class="btn success" id="bankp1" value="Bank Pays Player 1" onClick="bankpaysp1();">Bank Pays Player 1</button> -->
+            </td>
+            <td>
+                <a href="javascript:p2paysp1();" id="p2p1" class="btn danger large">Player 2 Pays Player 1</a>
+                <!-- <button class="btn danger" id="p2p1" value="Player 2 Pays Player 1" onClick="p2paysp1();">Player 2 Pays Player 1</button> -->
+            </td>
+             <td>
+                <a href="javascript:bankpaysp2();" id="bankp2" class="btn success large">Bank Pays Player 2</a>
+                <!-- <button class="btn success" id="bankp2" value="Bank Pays Player 2" onClick="bankpaysp2();">Bank Pays Player 2</button> -->
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
