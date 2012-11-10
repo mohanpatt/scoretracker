@@ -10,7 +10,7 @@ function updateBalance() {
 	document.getElementById("player2balance").textContent = document.getElementById("p2balance").value;
 }
 function getUserInput() {
-	var val = prompt("Please enter amount","0");
+	var val = prompt("Please enter amount","");
 	var numval = Number(val);
 	if(isNaN(numval)) {
 		alert("Please enter a valid number using zero instead");
