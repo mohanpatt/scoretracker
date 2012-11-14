@@ -3,20 +3,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Monopoly Scorecard</title>
-  <!--<link rel="stylesheet" href="stylesheets/bootstrap.css" />-->
-  <!-- <link rel="stylesheet" href="stylesheets/bootstrap.min.css" /> -->
-  <!--<link rel="stylesheet" href="stylesheets/bootstrap-responsive.css" />-->
-  <!-- <link rel="stylesheet" href="stylesheets/bootstrap-responsive.min.css" /> -->
-  <link rel="stylesheet" href="stylesheets/bootstrapv1-1-1.css" />
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-  <script type="text/javascript" src="javascripts/script.js"></script>
+<link href="http://webdesigntutsplus.s3.amazonaws.com/tuts/195_bootstrap/demo/bootstrap-1.1.1.css" rel="stylesheet">
 <script language="javascript">
 function updateBalance() {
 	document.getElementById("player1balance").textContent = document.getElementById("p1balance").value;
 	document.getElementById("player2balance").textContent = document.getElementById("p2balance").value;
 }
 function getUserInput() {
-	var val = prompt("Please enter amount","");
+	var val = prompt("Please enter amount","0");
 	var numval = Number(val);
 	if(isNaN(numval)) {
 		alert("Please enter a valid number using zero instead");
@@ -77,14 +71,24 @@ function bankpaysp2() {
 function handleChangeText() {
 	var p1 = document.getElementById("player1").value;
 	var p2 = document.getElementById("player2").value;
+	var plen = p1.length;
+	if(plen==0) {
+		p1 = "Player 1";
+	}
+	document.getElementById("player1").value = p1;
+	plen = p2.length;
+	if(plen==0) {
+		p2 = "Player 2";
+	}
+	document.getElementById("player2").value = p2;
 	document.getElementById("player1text").textContent = p1;
-	document.getElementById("p1p2").text = p1 + " Pays " + p2;
-	document.getElementById("p1bank").text = p1 + " Pays Bank";
-	document.getElementById("bankp1").text = "Bank Pays " + p1;
+	document.getElementById("p1p2").innerHTML = p1 + " Pays " + p2;
+	document.getElementById("p1bank").innerHTML = p1 + " Pays Bank";
+	document.getElementById("bankp1").innerHTML = "Bank Pays " + p1;
 	document.getElementById("player2text").textContent = p2;
-	document.getElementById("p2p1").text = p2 + " Pays " + p1;
-	document.getElementById("p2bank").text = p2 + " Pays Bank";
-	document.getElementById("bankp2").text = "Bank Pays " + p2;
+	document.getElementById("p2p1").innerHTML = p2 + " Pays " + p1;
+	document.getElementById("p2bank").innerHTML = p2 + " Pays Bank";
+	document.getElementById("bankp2").innerHTML = "Bank Pays " + p2;
 }
 function startNewGame() {
 	var r=confirm("Press OK to reset balance to 2000 for both players!");
@@ -129,12 +133,12 @@ function startNewGame() {
 
 <table class="zebra-striped table-bordered">
 	<thead>
-        <tr align="center">
+        <tr>
             <th>
                 <label class="player" id="player1text">Player 1</label>
             </th>
             <th>
-            	<label class="medium">Play Now!</label>
+            	<label class="player">Play Now!!!</label>
     </th>
             <th>
                 <label class="player" id="player2text">Player 2</label>
@@ -151,7 +155,7 @@ function startNewGame() {
                 $<span id="player2balance">2000</span></label>
             </td>
         </tr>
-        <tr align="center">
+        <tr>
             <td>
                 <a href="javascript:p1paysbank();" id="p1bank" class="btn primary large">Player 1 Pays Bank</a>
                 <!-- <button class="btn primary" id="p1bank" value="Player 1 Pays Bank" onClick="p1paysbank();">Player 1 Pays Bank</button> -->
@@ -165,7 +169,7 @@ function startNewGame() {
                 <!-- <button class="btn primary" id="p2bank" value="Player 2 Pays Bank" onClick="p1paysbank();">Player 2 Pays Bank</button> -->
             </td>
         </tr>
-        <tr align="center">
+        <tr>
             <td>
                 <a href="javascript:bankpaysp1();" id="bankp1" class="btn success large">Bank Pays Player 1</a>
                 <!-- <button class="btn success" id="bankp1" value="Bank Pays Player 1" onClick="bankpaysp1();">Bank Pays Player 1</button> -->
