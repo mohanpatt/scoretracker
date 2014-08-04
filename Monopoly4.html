@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Monopoly Scorecard</title>
+		<!-- <link href="http://webdesigntutsplus.s3.amazonaws.com/tuts/195_bootstrap/demo/bootstrap-1.1.1.css" rel="stylesheet"> -->
+		<link href="stylesheets/bootstrap.css" rel="stylesheet">
+		<link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">
+		<script src="javascripts/jquery.min.js"></script>
+		<script>
+			!window.jQuery && document.write('<script src="javascripts/jquery.min.js"><\/script>');
+		</script>
+		<script language="javascript">
+			function updateBalance() {
+				var p1bal = document.getElementById("p1balance").value;
+				var p2bal = document.getElementById("p2balance").value;
+				var p3bal = document.getElementById("p3balance").value;
+				var p4bal = document.getElementById("p4balance").value;
+				document.getElementById("player1balance").textContent = p1bal;
+				document.getElementById("player2balance").textContent = p2bal;
+				document.getElementById("player3balance").textContent = p3bal;
+				document.getElementById("player4balance").textContent = p4bal;
+				/*
+				if (p1bal > p2bal) {
+					document.getElementById("winner").textContent = "Mohan";
+				} else if (p1bal < p2bal) {
+					document.getElementById("winner").textContent = "Ravina";
+				} else {
+					document.getElementById("winner").textContent = "Tie";
+				}*/
+			}
+
+			function getUserInput() {
+				var val = prompt("Please enter amount", "0");
+				var numval = Number(val);
+				if (isNaN(numval)) {
+					alert("Please enter a valid number using zero instead");
+					return Number("0");
+				} else {
+					var numvalint = Math.round(numval);
+					return numvalint;
+				}
+			}
+
+			function getdatetime() {
+				var currentTime = new Date();
+				var month = currentTime.getMonth() + 1;
+				var day = currentTime.getDate();
+				var year = currentTime.getFullYear();
+				var hours = currentTime.getHours();
+				var minutes = currentTime.getMinutes();
+				if (minutes < 10) {
+					minutes = "0" + minutes;
+				}
+				var ampm;
+				if (hours > 11) {
+					ampm = "PM";
+					if(hours > 12) {
+						hours = hours - 12;
+					}
+				} else {
+					ampm = "AM";
+				}
+				var seconds = currentTime.getSeconds();
+				if (seconds < 10) {
+					seconds = "0" + seconds;
+				}
+				var datetime = month + "/" + day + "/" + year + " " + hours + ":" + minutes + ":" + seconds + " " + ampm;
+				return datetime;
+			}
+			
+			function pay(fromp, top) {
+				var numvalint = getUserInput();
+				var p1valint = Math.round(Number(document.getElementById(fromp).value));
+				var p2valint = Math.round(Number(document.getElementById(top).value));
+				p2valint = p2valint + numvalint;
+				p1valint = p1valint - numvalint;
+				document.getElementById(fromp).value = p1valint;
+				document.getElementById(top).value = p2valint;
+				updateBalance();
+				var tablecode = "<tr><td>";
+				tablecode += getdatetime();
+				tablecode += ": " + fromp + " Pays " + top + " $";
+				tablecode += numvalint;
+				tablecode += " </td></tr>";
+				$('#logtable').append(tablecode);
+			}
+
+			function resetbalance() {
+				var resetbalance = 2000;
+				document.getElementById("p1balance").value = resetbalance;
+				document.getElementById("p2balance").value = resetbalance;
+				document.getElementById("p3balance").value = resetbalance;
+				document.getElementById("p4balance").value = resetbalance;
+				updateBalance();
+				$('#logtable').empty();
+				$('#logtable').append('<thead><th>Log</th></thead>');
+			}
+
+			function startNewGame() {
+				var r = confirm("Press OK to reset balance to 2000 for all players!");
+				if (r == true) {
+					resetbalance();
+				} else {
+					//do nothing
+				}
+			}
+
+
+			$(document).ready(function() {
+				resetbalance();
+			});
+		</script>
+		<style type="text/css">
+			body {
+				padding-top: 10px;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+
+			/* Custom container */
+			.container-narrow {
+				margin: 0 auto;
+				max-width: 700px;
+			}
+			.container-narrow > hr {
+				margin: 30px 0;
+			}
+			.table td {
+				text-align: center;
+			}
+			.table th {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+
+		<input type="hidden" id="p1balance" value="2000">
+		<input type="hidden" id="p2balance" value="2000">
+		<input type="hidden" id="p3balance" value="2000">
+		<input type="hidden" id="p4balance" value="2000">
+		<input type="hidden" id="bankbalance" value="1000000">
+		<!-- <div class="container-narrow"> -->
+		<div class="row-fluid">
+			<div class="span8">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td colspan="4"><h1>Monopoly Scoreboard Tracker</h1><a href="javascript:startNewGame()" class="btn btn-large btn-info">Start New Game</a></td>
+					</tr>
+					<tr>
+						<td><h2>Thatha</h2><img width="90" height="90" src="images/thatha.jpg"></td>
+						<td><h2>Patti</h2><img width="90" height="90" src="images/patti.jpg"></td>
+						<td><h2>Rohan</h2><img width="90" height="90" src="images/spiderman.jpg"></td>
+						<td><h2>Movina</h2><img width="90" height="90" src="images/pinkalicious.jpg"></td>			
+					</tr>
+					<tr>
+						<td><h3>$<span id="player1balance">2000</span></h3></td>
+						<td><h3>$<span id="player2balance">2000</span></h3></td>
+						<td><h3>$<span id="player3balance">2000</span></h3></td>
+						<td><h3>$<span id="player4balance">2000</span></h3></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('bankbalance', 'p1balance');" id="p2bank" class="btn btn-large btn-success">Bank Pays Thatha</a></td>				
+						<td><a href="javascript:pay('p2balance', 'p1balance');" id="p2bank" class="btn btn-large btn-success">Patti Pays Thatha</a></td>
+						<td><a href="javascript:pay('p3balance', 'p1balance');" id="p2bank" class="btn btn-large btn-success">Rohan Pays Thatha</a></td>
+						<td><a href="javascript:pay('p4balance', 'p1balance');" id="p2bank" class="btn btn-large btn-success">Movina Pays Thatha</a></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('p1balance', 'p2balance');" id="p2bank" class="btn btn-large btn-primary">Thatha Pays Patti</a></td>				
+						<td><a href="javascript:pay('bankbalance', 'p2balance');" id="p2bank" class="btn btn-large btn-primary">Bank Pays Patti</a></td>
+						<td><a href="javascript:pay('p3balance', 'p2balance');" id="p2bank" class="btn btn-large btn-primary">Rohan Pays Patti</a></td>
+						<td><a href="javascript:pay('p4balance', 'p2balance');" id="p2bank" class="btn btn-large btn-primary">Movina Pays Patti</a></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('p1balance', 'p3balance');" id="p2bank" class="btn btn-large btn-danger">Thatha Pays Rohan</a></td>				
+						<td><a href="javascript:pay('p2balance', 'p3balance');" id="p2bank" class="btn btn-large btn-danger">Patti Pays Rohan</a></td>
+						<td><a href="javascript:pay('bankbalance', 'p3balance');" id="p2bank" class="btn btn-large btn-danger">Bank Pays Rohan</a></td>
+						<td><a href="javascript:pay('p4balance', 'p3balance');" id="p2bank" class="btn btn-large btn-danger">Movina Pays Rohan</a></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('p1balance', 'p4balance');" id="p2bank" class="btn btn-large btn-warning">Thatha Pays Movina</a></td>				
+						<td><a href="javascript:pay('p2balance', 'p4balance');" id="p2bank" class="btn btn-large btn-warning">Patti Pays Movina</a></td>
+						<td><a href="javascript:pay('p3balance', 'p4balance');" id="p2bank" class="btn btn-large btn-warning">Rohan Pays Movina</a></td>
+						<td><a href="javascript:pay('bankbalance', 'p4balance');" id="p2bank" class="btn btn-large btn-warning">Bank Pays Movina</a></td>
+						
+					</tr>
+				</table>
+			</div>
+			<div class="span4">
+				<table id="logtable" class="table table-bordered table-striped">
+					<thead>
+						<th>Log</th>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
