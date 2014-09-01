@@ -11,27 +11,20 @@
 			!window.jQuery && document.write('<script src="javascripts/jquery.min.js"><\/script>');
 		</script>
 		<script language="javascript">
+			
 			function updateBalance() {
-				var p1bal = document.getElementById("p1balance").value;
-				var p2bal = document.getElementById("p2balance").value;
-				var p3bal = document.getElementById("p3balance").value;
-//				var p4bal = document.getElementById("p4balance").value;
+				var p1bal = document.getElementById("Thatha").value;
+				var p2bal = document.getElementById("Oowa").value;
+				var p3bal = document.getElementById("Rohan").value;
+				var p4bal = document.getElementById("Movina").value;
 				document.getElementById("player1balance").textContent = p1bal;
 				document.getElementById("player2balance").textContent = p2bal;
 				document.getElementById("player3balance").textContent = p3bal;
-//				document.getElementById("player4balance").textContent = p4bal;
-				/*
-				if (p1bal > p2bal) {
-					document.getElementById("winner").textContent = "Mohan";
-				} else if (p1bal < p2bal) {
-					document.getElementById("winner").textContent = "Ravina";
-				} else {
-					document.getElementById("winner").textContent = "Tie";
-				}*/
+				document.getElementById("player4balance").textContent = p4bal;
 			}
 
-			function getUserInput() {
-				var val = prompt("Please enter amount", "0");
+			function getUserInput(promptText) {
+				var val = prompt(promptText, "0");
 				var numval = Number(val);
 				if (isNaN(numval)) {
 					alert("Please enter a valid number using zero instead");
@@ -70,7 +63,7 @@
 			}
 			
 			function reset(fromp) {
-				var numvalint = getUserInput();
+				var numvalint = getUserInput("RESET " + fromp + " balance to");
 				var valint = Math.round(Number(numvalint));
 				document.getElementById(fromp).value = valint;
 				updateBalance();
@@ -79,7 +72,9 @@
 				tablecode += ": " + fromp + " Reset to $";
 				tablecode += numvalint;
 				tablecode += " </td></tr>";
-				$('#logtable').append(tablecode);
+				//$('#logtable').append(tablecode);
+				//$('#logtable').insertRow(-1).innerHTML = tablecode;
+				$('#logtable').prepend(tablecode);
 			}
 			
 			function passgo(fromp) {
@@ -91,11 +86,13 @@
 				tablecode += getdatetime();
 				tablecode += ": " + fromp + " Passed go added $200";
 				tablecode += " </td></tr>";
-				$('#logtable').append(tablecode);
+				//$('#logtable').append(tablecode);
+				//$('#logtable').insertRow(-1).innerHTML = tablecode;
+				$('#logtable').prepend(tablecode);
 			}
 			
 			function pay(fromp, top) {
-				var numvalint = getUserInput();
+				var numvalint = getUserInput(fromp + " PAYS -> " + top);
 				var p1valint = Math.round(Number(document.getElementById(fromp).value));
 				var p2valint = Math.round(Number(document.getElementById(top).value));
 				p2valint = p2valint + numvalint;
@@ -108,15 +105,17 @@
 				tablecode += ": " + fromp + " Pays " + top + " $";
 				tablecode += numvalint;
 				tablecode += " </td></tr>";
-				$('#logtable').append(tablecode);
+				//$('#logtable').append(tablecode);
+				//$('#logtable').insertRow(-1).innerHTML = tablecode;
+				$('#logtable').prepend(tablecode);
 			}
 
 			function resetbalance() {
 				var resetbalance = 2000;
-				document.getElementById("p1balance").value = resetbalance;
-				document.getElementById("p2balance").value = resetbalance;
-				document.getElementById("p3balance").value = resetbalance;
-//				document.getElementById("p4balance").value = resetbalance;
+				document.getElementById("Thatha").value = resetbalance;
+				document.getElementById("Oowa").value = resetbalance;
+				document.getElementById("Rohan").value = resetbalance;
+				document.getElementById("Movina").value = resetbalance;
 				updateBalance();
 				$('#logtable').empty();
 				$('#logtable').append('<thead><th>Log</th></thead>');
@@ -161,11 +160,12 @@
 	</head>
 	<body>
 
-		<input type="hidden" id="p1balance" value="2000">
-		<input type="hidden" id="p2balance" value="2000">
-		<input type="hidden" id="p3balance" value="2000">
-<!--		<input type="hidden" id="p4balance" value="2000">		-->
-		<input type="hidden" id="bankbalance" value="1000000">
+		<input type="hidden" id="Thatha" value="2000">
+		<input type="hidden" id="Oowa" value="2000">
+		<input type="hidden" id="Rohan" value="2000">
+		<input type="hidden" id="Movina" value="2000">
+		<input type="hidden" id="Bank" value="1000000">
+		
 		<!-- <div class="container-narrow"> -->
 		<div class="row-fluid">
 			<div class="span8">
@@ -179,29 +179,30 @@
 						<td><h2>Rohan</h2><img width="90" height="90" src="images/spiderman.jpg"></td>
 					</tr>
 					<tr>
-						<td><h3><a href="javascript:passgo('p1balance');">Go!</a>&nbsp;$<span id="player1balance">2000</span>&nbsp;<a href="javascript:reset('p1balance');">Set</a></h3></td>
-						<td><h3><a href="javascript:passgo('p2balance');">Go!</a>&nbsp;$<span id="player2balance">2000</span>&nbsp;<a href="javascript:reset('p2balance');">Set</a></h3></td>
-						<td><h3><a href="javascript:passgo('p3balance');">Go!</a>&nbsp;$<span id="player3balance">2000</span>&nbsp;<a href="javascript:reset('p3balance');">Set</a></h3></td>
+						<td><h3><a href="javascript:passgo('Thatha');">Go!</a>&nbsp;$<span id="player1balance">2000</span>&nbsp;<a href="javascript:reset('Thatha');">Set</a></h3></td>
+						<td><h3><a href="javascript:passgo('Oowa');">Go!</a>&nbsp;$<span id="player2balance">2000</span>&nbsp;<a href="javascript:reset('Oowa');">Set</a></h3></td>
+						<td><h3><a href="javascript:passgo('Rohan');">Go!</a>&nbsp;$<span id="player3balance">2000</span>&nbsp;<a href="javascript:reset('Rohan');">Set</a></h3></td>
+						<input type="hidden" id="player4balance">
 					</tr>
 					<tr>
-						<td><a href="javascript:pay('bankbalance', 'p1balance');" id="p2bank" class="btn btn-large btn-success">Bank Pays Thatha</a></td>				
-						<td><a href="javascript:pay('p2balance', 'p1balance');" id="p2bank" class="btn btn-large btn-success">Oowa Pays Thatha</a></td>
-						<td><a href="javascript:pay('p3balance', 'p1balance');" id="p2bank" class="btn btn-large btn-success">Rohan Pays Thatha</a></td>
+						<td><a href="javascript:pay('Bank', 'Thatha');" id="p2bank" class="btn btn-large btn-success">Bank Pays Thatha</a></td>				
+						<td><a href="javascript:pay('Oowa', 'Thatha');" id="p2bank" class="btn btn-large btn-success">Oowa Pays Thatha</a></td>
+						<td><a href="javascript:pay('Rohan', 'Thatha');" id="p2bank" class="btn btn-large btn-success">Rohan Pays Thatha</a></td>
 					</tr>
 					<tr>
-						<td><a href="javascript:pay('p1balance', 'p2balance');" id="p2bank" class="btn btn-large btn-primary">Thatha Pays Oowa</a></td>				
-						<td><a href="javascript:pay('bankbalance', 'p2balance');" id="p2bank" class="btn btn-large btn-primary">Bank Pays Oowa</a></td>
-						<td><a href="javascript:pay('p3balance', 'p2balance');" id="p2bank" class="btn btn-large btn-primary">Rohan Pays Oowa</a></td>
+						<td><a href="javascript:pay('Thatha', 'Oowa');" id="p2bank" class="btn btn-large btn-primary">Thatha Pays Oowa</a></td>				
+						<td><a href="javascript:pay('Bank', 'Oowa');" id="p2bank" class="btn btn-large btn-primary">Bank Pays Oowa</a></td>
+						<td><a href="javascript:pay('Rohan', 'Oowa');" id="p2bank" class="btn btn-large btn-primary">Rohan Pays Oowa</a></td>
 					</tr>
 					<tr>
-						<td><a href="javascript:pay('p1balance', 'p3balance');" id="p2bank" class="btn btn-large btn-danger">Thatha Pays Rohan</a></td>				
-						<td><a href="javascript:pay('p2balance', 'p3balance');" id="p2bank" class="btn btn-large btn-danger">Oowa Pays Rohan</a></td>
-						<td><a href="javascript:pay('bankbalance', 'p3balance');" id="p2bank" class="btn btn-large btn-danger">Bank Pays Rohan</a></td>
+						<td><a href="javascript:pay('Thatha', 'Rohan');" id="p2bank" class="btn btn-large btn-danger">Thatha Pays Rohan</a></td>				
+						<td><a href="javascript:pay('Oowa', 'Rohan');" id="p2bank" class="btn btn-large btn-danger">Oowa Pays Rohan</a></td>
+						<td><a href="javascript:pay('Bank', 'Rohan');" id="p2bank" class="btn btn-large btn-danger">Bank Pays Rohan</a></td>
 					</tr>
 					<tr>
-						<td><a href="javascript:pay('p1balance', 'bankbalance');" id="p2bank" class="btn btn-large btn-warning">Thatha Pays Bank</a></td>				
-						<td><a href="javascript:pay('p2balance', 'bankbalance');" id="p2bank" class="btn btn-large btn-warning">Oowa Pays Bank</a></td>
-						<td><a href="javascript:pay('p3balance', 'bankbalance');" id="p2bank" class="btn btn-large btn-warning">Rohan Pays Bank</a></td>
+						<td><a href="javascript:pay('Thatha', 'Bank');" id="p2bank" class="btn btn-large btn-warning">Thatha Pays Bank</a></td>				
+						<td><a href="javascript:pay('Oowa', 'Bank');" id="p2bank" class="btn btn-large btn-warning">Oowa Pays Bank</a></td>
+						<td><a href="javascript:pay('Rohan', 'Bank');" id="p2bank" class="btn btn-large btn-warning">Rohan Pays Bank</a></td>
 					</tr>
 				</table>
 			</div>
