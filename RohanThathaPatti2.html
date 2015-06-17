@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Monopoly Scorecard</title>
+		<!-- <link href="http://webdesigntutsplus.s3.amazonaws.com/tuts/195_bootstrap/demo/bootstrap-1.1.1.css" rel="stylesheet"> -->
+		<link href="stylesheets/bootstrap.css" rel="stylesheet">
+		<link href="stylesheets/bootstrap-responsive.css" rel="stylesheet">
+		<script src="javascripts/jquery.min.js"></script>
+		<script>
+			!window.jQuery && document.write('<script src="javascripts/jquery.min.js"><\/script>');
+		</script>
+		<script language="javascript">
+
+			function updateBalance() {
+				var p1bal = document.getElementById("Thatha").value;
+				var p2bal = document.getElementById("Rohan").value;
+				var p3bal = document.getElementById("Patti").value;
+				document.getElementById("player1balance").textContent = p1bal;
+				document.getElementById("player2balance").textContent = p2bal;
+				document.getElementById("player3balance").textContent = p3bal;
+			}
+
+			function getUserInput(promptText) {
+				var val = prompt(promptText, "0");
+				var numval = Number(val);
+				if (isNaN(numval)) {
+					alert("Please enter a valid number using zero instead");
+					return Number("0");
+				} else {
+					var numvalint = Math.round(numval);
+					return numvalint;
+				}
+			}
+
+			function getdatetime() {
+				var currentTime = new Date();
+				var month = currentTime.getMonth() + 1;
+				var day = currentTime.getDate();
+				var year = currentTime.getFullYear();
+				var hours = currentTime.getHours();
+				var minutes = currentTime.getMinutes();
+				if (minutes < 10) {
+					minutes = "0" + minutes;
+				}
+				var ampm;
+				if (hours > 11) {
+					ampm = "PM";
+					if(hours > 12) {
+						hours = hours - 12;
+					}
+				} else {
+					ampm = "AM";
+				}
+				var seconds = currentTime.getSeconds();
+				if (seconds < 10) {
+					seconds = "0" + seconds;
+				}
+				var datetime = month + "/" + day + "/" + year + " " + hours + ":" + minutes + ":" + seconds + " " + ampm;
+				return datetime;
+			}
+
+			function reset(fromp) {
+				var numvalint = getUserInput("RESET " + fromp + " balance to");
+				var valint = Math.round(Number(numvalint));
+				document.getElementById(fromp).value = valint;
+				updateBalance();
+				var tablecode = "<tr><td>";
+				tablecode += getdatetime();
+				tablecode += ": " + fromp + " Reset to $";
+				tablecode += numvalint;
+				tablecode += " </td></tr>";
+				//$('#logtable').append(tablecode);
+				//$('#logtable').insertRow(-1).innerHTML = tablecode;
+				$('#logtable').prepend(tablecode);
+			}
+
+			function passgo(fromp) {
+				var p1valint = Math.round(Number(document.getElementById(fromp).value));
+				p1valint += 200;
+				document.getElementById(fromp).value = p1valint;
+				updateBalance();
+				var tablecode = "<tr><td>";
+				tablecode += getdatetime();
+				tablecode += ": " + fromp + " Passed go added $200";
+				tablecode += " </td></tr>";
+				//$('#logtable').append(tablecode);
+				//$('#logtable').insertRow(-1).innerHTML = tablecode;
+				$('#logtable').prepend(tablecode);
+			}
+
+			function pay(fromp, top) {
+				var numvalint = getUserInput(fromp + " PAYS -> " + top);
+				var p1valint = Math.round(Number(document.getElementById(fromp).value));
+				var p2valint = Math.round(Number(document.getElementById(top).value));
+				p2valint = p2valint + numvalint;
+				p1valint = p1valint - numvalint;
+				document.getElementById(fromp).value = p1valint;
+				document.getElementById(top).value = p2valint;
+				updateBalance();
+				var tablecode = "<tr><td>";
+				tablecode += getdatetime();
+				tablecode += ": " + fromp + " Pays " + top + " $";
+				tablecode += numvalint;
+				tablecode += " </td></tr>";
+				//$('#logtable').append(tablecode);
+				//$('#logtable').insertRow(-1).innerHTML = tablecode;
+				$('#logtable').prepend(tablecode);
+			}
+
+			function resetbalance() {
+				var resetbalance = 2000;
+				document.getElementById("Thatha").value = resetbalance;
+				document.getElementById("Rohan").value = resetbalance;
+				document.getElementById("Patti").value = resetbalance;
+				updateBalance();
+				$('#logtable').empty();
+				$('#logtable').append('<thead><th>Log</th></thead>');
+			}
+
+			function startNewGame() {
+				var r = confirm("Press OK to reset balance to 2000 for all players!");
+				if (r == true) {
+					resetbalance();
+				} else {
+					//do nothing
+				}
+			}
+
+
+			$(document).ready(function() {
+				resetbalance();
+			});
+		</script>
+		<style type="text/css">
+			body {
+				padding-top: 10px;
+				padding-left: 20px;
+				padding-right: 20px;
+			}
+
+			/* Custom container */
+			.container-narrow {
+				margin: 0 auto;
+				max-width: 700px;
+			}
+			.container-narrow > hr {
+				margin: 30px 0;
+			}
+			.table td {
+				text-align: center;
+			}
+			.table th {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+
+		<input type="hidden" id="Thatha" value="2000">
+		<input type="hidden" id="Rohan" value="2000">
+		<input type="hidden" id="Patti" value="2000">
+		<input type="hidden" id="Bank" value="1000000">
+
+		<!-- <div class="container-narrow"> -->
+		<div class="row-fluid">
+			<div class="span8">
+				<table class="table table-bordered table-striped">
+					<tr>
+						<td colspan="4"><h1>Monopoly Scoreboard Tracker</h1><a href="javascript:startNewGame()" class="btn btn-large btn-info">Start New Game</a></td>
+					</tr>
+					<tr>
+						<td><h2>Thatha</h2></td>
+						<td><h2>Rohan</h2></td>
+						<td><h2>Patti</h2></td>
+					</tr>
+					<tr>
+						<td><h3><a href="javascript:passgo('Thatha');">Go!</a>&nbsp;$<span id="player1balance">2000</span>&nbsp;<a href="javascript:reset('Thatha');">Set</a></h3></td>
+						<td><h3><a href="javascript:passgo('Rohan');">Go!</a>&nbsp;$<span id="player2balance">2000</span>&nbsp;<a href="javascript:reset('Rohan');">Set</a></h3></td>
+						<td><h3><a href="javascript:passgo('Patti');">Go!</a>&nbsp;$<span id="player3balance">2000</span>&nbsp;<a href="javascript:reset('Patti');">Set</a></h3></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('Bank', 'Thatha');" class="btn btn-large btn-success">Bank Pays Thatha</a></td>
+						<td><a href="javascript:pay('Bank', 'Rohan');" class="btn btn-large btn-success">Bank Pays Rohan</a></td>
+						<td><a href="javascript:pay('Bank', 'Patti');" class="btn btn-large btn-success">Bank Pays Patti</a></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('Rohan', 'Thatha');" class="btn btn-large btn-danger">Rohan Pays Thatha</a></td>
+						<td><a href="javascript:pay('Thatha', 'Rohan');" class="btn btn-large btn-danger">Thatha Pays Rohan</a></td>
+						<td><a href="javascript:pay('Thatha', 'Patti');" class="btn btn-large btn-danger">Thatha Pays Patti</a></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('Patti', 'Thatha');" class="btn btn-large btn-primary">Patti Pays Thatha</a></td>
+						<td><a href="javascript:pay('Patti', 'Rohan');" class="btn btn-large btn-primary">Patti Pays Rohan</a></td>
+						<td><a href="javascript:pay('Rohan', 'Patti');" class="btn btn-large btn-primary">Rohan Pays Patti</a></td>
+					</tr>
+					<tr>
+						<td><a href="javascript:pay('Thatha', 'Bank');" class="btn btn-large btn-warning">Thatha Pays Bank</a></td>
+						<td><a href="javascript:pay('Rohan', 'Bank');" class="btn btn-large btn-warning">Rohan Pays Bank</a></td>
+						<td><a href="javascript:pay('Patti', 'Bank');" class="btn btn-large btn-warning">Patti Pays Bank</a></td>
+					</tr>
+				</table>
+			</div>
+			<div class="span4">
+				<table id="logtable" class="table table-bordered table-striped">
+					<thead>
+						<th>Log</th>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
